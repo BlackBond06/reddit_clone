@@ -18,7 +18,7 @@ const SearchInput = (props: Props) => {
         _hover={{bg:"#fefefe", border:"1px solid", bgColor:"#fefefe.500", borderColor:"blue.500"}}
         _focus={{outline:"none", border:"1px solid", borderColor:"blue.500"}}
         height="34px"
-        bg="gray.54"
+        bg="#f2f8fc"
          />
       </InputGroup>
 
