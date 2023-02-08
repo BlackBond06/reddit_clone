@@ -3,31 +3,27 @@ import React, { useState } from "react";
 import { authModalState } from "../../../atoms/authModalAtom";
 import { useSetRecoilState } from "recoil";
 import { auth } from "../../../firebase/clientApp";
-import {useCreateUserWithEmailAndPassword} from "react-firebase-hooks/auth";
-
+import { FIREBASE_ERRORS } from "../../../firebase/errors";
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
 
 const SignUp = () => {
   const setAuthModalState = useSetRecoilState(authModalState);
   const [signUpForm, setSignUpForm] = useState({
     email: "",
     password: "",
-    confirmPassword:"",
+    confirmPassword: "",
   });
 
   const [error, setError] = useState("");
 
-  const [
-    createUserWithEmailAndPassword,
-    user,
-    loading,
-    userError,
-  ] = useCreateUserWithEmailAndPassword(auth);
+  const [createUserWithEmailAndPassword, user, loading, userError] =
+    useCreateUserWithEmailAndPassword(auth);
 
   //   firebase logic
-  const onSubmit = (event:React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(error) setError("");
-    if(signUpForm.password !== signUpForm.confirmPassword){
+    if (error) setError("");
+    if (signUpForm.password !== signUpForm.confirmPassword) {
       // setError
       setError("Passwords do not match");
       return;
@@ -39,7 +35,7 @@ const SignUp = () => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // update state
 
-    setSignUpForm(prev => ({
+    setSignUpForm((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
@@ -113,10 +109,19 @@ const SignUp = () => {
         }}
         bg="gray.50"
       />
-     {error || userError && (<Text textAlign="center" color="red" fontSize="10pt">
-      {error || userError.message} 
-     </Text>)}
-      <Button type="submit" width="100%" height="36px" mt={2} mb={2} isLoading={loading}>
+      {(error ||userError) && (
+          <Text textAlign="center" color="red" fontSize="10pt">
+            {error || FIREBASE_ERRORS[userError?.message as keyof typeof FIREBASE_ERRORS] }
+          </Text>
+        )}
+      <Button
+        type="submit"
+        width="100%"
+        height="36px"
+        mt={2}
+        mb={2}
+        isLoading={loading}
+      >
         Sign Up
       </Button>
       <Flex fontSize="9pt" justifyContent="center">
