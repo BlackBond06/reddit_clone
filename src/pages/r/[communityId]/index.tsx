@@ -5,12 +5,14 @@ import { GetServerSidePropsContext } from 'next';
 import React from 'react';
 import safeJsonStringify from "safe-json-stringify"
 import NotFound from "@/src/components/Community/NotFound";
+import Header from "../../../components/Community/Header"
+import PageContent from "../../../components/layouts/PageContent";
 
 type Props = {
     communityData:Community;
 }
 
-const CommunityPage = ({communityData}:{communityData:Community;}) => {
+const CommunityPage = ({communityData}:Props) => {
     
     if(!communityData){
         return (
@@ -22,7 +24,13 @@ const CommunityPage = ({communityData}:{communityData:Community;}) => {
 
 
   return (
-    <div>WELCOM TO {communityData.id}</div>
+    <>
+    <Header communityData={communityData}/>
+    <PageContent>
+      <>LHS</>
+      <>RHS</>
+    </PageContent>
+    </>
   )
 }
 export async function getServerSideProps (context:GetServerSidePropsContext){
