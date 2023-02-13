@@ -1,8 +1,9 @@
 import React from "react";
 import { AddIcon } from "@chakra-ui/icons";
-import { Box, Flex, Icon } from "@chakra-ui/react";
+import { Box, Flex, Icon, Text } from "@chakra-ui/react";
 import { BsArrowUpRightCircle, BsChatDots } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
+import { HiOutlineSpeakerphone, } from "react-icons/hi";
 import {
   IoFilterCircleOutline,
   IoNotificationsOutline,
@@ -80,6 +81,18 @@ const Icons = () => {
         _hover={{bg:"gray.200"}}
         >
           <Icon as={GrAdd}fontSize={22} />
+        </Flex>
+      <Flex
+        display={{base:"none", md:"flex"}}
+        mr={1.5}
+        ml={1.5}
+        padding={2}
+        cursor="pointer"
+        borderRadius={50}
+        bg="gray.100"
+        >
+          <Icon as={HiOutlineSpeakerphone}fontSize={22} />
+          <Text fontWeight="bold" fontSize="10pt">Advertise</Text>
         </Flex>
       </>
     </Flex>
