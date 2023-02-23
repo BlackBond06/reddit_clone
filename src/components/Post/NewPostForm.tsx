@@ -1,5 +1,12 @@
 import { Icon } from "@chakra-ui/icon/dist/icon";
-import { Alert, AlertDescription, AlertIcon, AlertTitle,  Flex, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
+  Flex,
+  Text,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { BsLink45Deg, BsMic } from "react-icons/bs";
 import { BiPoll } from "react-icons/bi";
@@ -93,15 +100,15 @@ const NewPostForm = ({ user }: Props) => {
           imageURL: downloadURL,
         });
       }
+
+      // redirect the user back to the communityPage using router
+      router.back();
     } catch (error: any) {
       console.log("handleCreatePost error", error.message);
       setError(true);
     }
 
     setLoading(false);
-
-    // redirect the user back to the communityPage using router
-    // router.back()
   };
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,10 +168,10 @@ const NewPostForm = ({ user }: Props) => {
         )}
       </Flex>
       {error && (
-        <Alert status='error'>
-        <AlertIcon />
-        <Text>Error creating post!</Text>
-      </Alert>
+        <Alert status="error">
+          <AlertIcon />
+          <Text>Error creating post!</Text>
+        </Alert>
       )}
     </Flex>
   );
