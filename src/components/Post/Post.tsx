@@ -7,6 +7,7 @@ import { collection, getDocs, orderBy, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import PostItem from "./PostItem";
+import PostLoader from "./PostLoader";
 
 type Props = {
   communityData: Community;
@@ -25,6 +26,7 @@ const Post = ({ communityData }: Props) => {
 
   const getPost = async () => {
     try {
+      setLoading(true);
       // get post from community
       const postQuery = query(
         collection(firestore, "posts"),
@@ -40,6 +42,8 @@ const Post = ({ communityData }: Props) => {
     } catch (error: any) {
       console.log("getPost Error", error.message);
     }
+
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -47,9 +51,12 @@ const Post = ({ communityData }: Props) => {
   }, []);
 
   return (
+    <>
+      {loading ? (<PostLoader/>):(
     <Stack>
       {postStateValue.posts.map((item) => (
         <PostItem
+        key={item.id}
           post={item}
           userIsCreator={user?.uid === item.creatorId}
           userVoteValue={undefined}
@@ -59,6 +66,8 @@ const Post = ({ communityData }: Props) => {
         />
       ))}
     </Stack>
+      )}
+    </>
   );
 };
 

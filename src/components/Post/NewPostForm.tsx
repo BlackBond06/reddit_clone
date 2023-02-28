@@ -25,6 +25,7 @@ import {
 } from "firebase/firestore";
 import { firestore, storage } from "@/src/firebase/clientApp";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import { Post } from "@/src/atoms/postsAtom";
 
 type Props = {
   user: User;

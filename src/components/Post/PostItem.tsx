@@ -1,7 +1,8 @@
 import { Post } from "@/src/atoms/postsAtom";
-import { Flex, Icon, Image, Stack, Text } from "@chakra-ui/react";
+import { Flex, Icon, Image, Skeleton, Stack, Text } from "@chakra-ui/react";
+// import { async } from "@firebase/util";
 import moment from "moment";
-import React from "react";
+import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChat, BsDot } from "react-icons/bs";
 import { FaReddit } from "react-icons/fa";
@@ -17,9 +18,9 @@ import {
 type Props = {
   post: Post;
   userIsCreator: boolean;
-  userVoteValue: number;
+  userVoteValue?: number;
   onVote: () => {};
-  onDeletePost: () => {};
+  onDeletePost: (post:Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
 
@@ -31,6 +32,25 @@ const PostItem = ({
   onDeletePost,
   onSelectPost,
 }: Props) => {
+  const [loadingImage, setLoadingImage] = useState(true);
+  const [error, setError] = useState(false);
+  
+  const handleDelete = async ()=> {
+    try {
+      const success = await onDeletePost(post);
+
+      if(!success){
+        throw new Error("Failed to delete post");
+      }
+
+      console.log("Post successfully deleted");
+      
+    } catch (error:any) {
+      setError(error.message)
+    }
+  };
+
+
   return (
     <Flex
       border="1px solid"
@@ -86,7 +106,11 @@ const PostItem = ({
           <Text fontSize="10pt">{post.body}</Text>
           {post.imageURL && (
             <Flex justify="center" align="center" p={2}>
-              <Image src={post.imageURL} maxHeight="460px" alt="Post Image" />
+              {loadingImage && (<Skeleton height="200px" width="100%" borderRadius={4} />)}
+              <Image src={post.imageURL} maxHeight="460px" alt="Post Image"
+              display={loadingImage ? "none" : "unset"}
+              onLoad={()=> setLoadingImage(false)}
+              />
             </Flex>
           )}
         </Stack>
@@ -128,7 +152,7 @@ const PostItem = ({
               borderRadius={4}
               _hover={{ bg: "gray.200" }}
               cursor="pointer"
-              onClick={onDeletePost}
+              onClick={handleDelete}
             >
               <Icon as={AiOutlineDelete} mr={2} />
               <Text fontSize="10pt">Delete</Text>
