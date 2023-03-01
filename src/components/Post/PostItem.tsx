@@ -1,5 +1,5 @@
 import { Post } from "@/src/atoms/postsAtom";
-import { Flex, Icon, Image, Skeleton, Stack, Text } from "@chakra-ui/react";
+import { Alert, AlertIcon, Flex, Icon, Image, Skeleton, Spinner, Stack, Text } from "@chakra-ui/react";
 // import { async } from "@firebase/util";
 import moment from "moment";
 import React, { useState } from "react";
@@ -33,9 +33,12 @@ const PostItem = ({
   onSelectPost,
 }: Props) => {
   const [loadingImage, setLoadingImage] = useState(true);
+  const [loadingDelete, setLoadingDelete] = useState(false);
+
   const [error, setError] = useState(false);
   
   const handleDelete = async ()=> {
+    setLoadingDelete(true);
     try {
       const success = await onDeletePost(post);
 
@@ -48,6 +51,7 @@ const PostItem = ({
     } catch (error:any) {
       setError(error.message)
     }
+    setLoadingDelete(false);
   };
 
 
@@ -92,6 +96,12 @@ const PostItem = ({
         />
       </Flex>
       <Flex direction="column" width="100%">
+      {error && (
+        <Alert status="error">
+          <AlertIcon />
+          <Text>{error}</Text>
+        </Alert>
+      )}
         <Stack spacing={1} p="10px">
           <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
             {/* Home page check */}
@@ -154,8 +164,12 @@ const PostItem = ({
               cursor="pointer"
               onClick={handleDelete}
             >
-              <Icon as={AiOutlineDelete} mr={2} />
+              {loadingDelete ?(<Spinner size="sm"/>) : (
+                <>
+                <Icon as={AiOutlineDelete} mr={2} />
               <Text fontSize="10pt">Delete</Text>
+                </>
+              )}
             </Flex>
           )}
         </Flex>
