@@ -1,5 +1,5 @@
 import { Community } from "@/src/atoms/communitiesAtom";
-import { Post } from "@/src/atoms/postsAtom";
+import { Post, PostState, PostVote } from "@/src/atoms/postsAtom";
 import { auth, firestore } from "@/src/firebase/clientApp";
 import usePost from "@/src/hooks/usePost";
 import { Stack } from "@chakra-ui/react";
@@ -59,7 +59,7 @@ const Post = ({ communityData }: Props) => {
         key={item.id}
           post={item}
           userIsCreator={user?.uid === item.creatorId}
-          userVoteValue={undefined}
+          userVoteValue={postStateValue.postVotes.find(vote => vote.id === item.id)?.voteValue}
           onVote={onVote}
           onSelectPost={onSelectPost}
           onDeletePost={onDeletePost}
