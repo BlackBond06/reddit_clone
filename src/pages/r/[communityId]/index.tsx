@@ -29,7 +29,7 @@ const CommunityPage = ({ communityData }: Props) => {
       ...prev,
       currentCommunity: communityData,
     }))
-  }, [])
+  }, [communityData])
 
   return (
     <>
