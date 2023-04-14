@@ -30,6 +30,7 @@ import useSelectFile from "@/src/hooks/useSelectFile";
 
 type Props = {
   user: User;
+  communityImageURL?: string;
 };
 
 const formTabs: Tabitem[] = [
@@ -64,7 +65,7 @@ export type Tabitem = {
   icon: typeof Icon.arguments;
 };
 
-const NewPostForm = ({ user }: Props) => {
+const NewPostForm = ({ user, communityImageURL }: Props) => {
   const router = useRouter();
 
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
@@ -78,16 +79,20 @@ const NewPostForm = ({ user }: Props) => {
 
   const handleCreatePost = async () => {
     const { communityId } = router.query;
+
+
     // create new post object => type Post
     const newPost: Post = {
       communityId: communityId as string,
-      creatorId: user?.uid,
+      communityImageURL:communityImageURL || "",
+      creatorId: user.uid,
       creatorDisplayName: user.email!.split("@")[0],
       title: textInputs.title,
       body: textInputs.body,
       numberOfComments: 0,
       voteStatus: 0,
       createdAt: serverTimestamp() as Timestamp,
+
     };
 
     setLoading(true);
@@ -137,7 +142,7 @@ const NewPostForm = ({ user }: Props) => {
           />
         ))}
       </Flex>
-      <Flex p={4}>
+      <Flex p={4}> 
         {selectedTab === "Post" && (
           <TextInputs
             textInputs={textInputs}
