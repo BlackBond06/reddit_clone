@@ -1,8 +1,19 @@
 import { Post } from "@/src/atoms/postsAtom";
-import { Alert, AlertIcon, Flex, Icon, Image, Skeleton, Spinner, Stack, Text } from "@chakra-ui/react";
+import {
+  Alert,
+  AlertIcon,
+  Flex,
+  Icon,
+  Image,
+  Skeleton,
+  Spinner,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 // import { async } from "@firebase/util";
 import moment from "moment";
-import { useRouter } from "next/router";
+import Link from "next/link";
+import { useRouter} from "next/router";
 import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChat, BsDot } from "react-icons/bs";
@@ -20,9 +31,15 @@ type Props = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
-  onVote: (event: React.MouseEvent<SVGAElement, MouseEvent>, post:Post, vote:number, communityId:string) => void;
-  onDeletePost: (post:Post) => Promise<boolean>;
-  onSelectPost?: (post:Post) => void;
+  onVote: (
+    event: React.MouseEvent<SVGAElement, MouseEvent>,
+    post: Post,
+    vote: number,
+    communityId: string
+  ) => void;
+  onDeletePost: (post: Post) => Promise<boolean>;
+  onSelectPost?: (post: Post) => void;
+  homePage?: boolean;
 };
 
 const PostItem = ({
@@ -32,6 +49,7 @@ const PostItem = ({
   onVote,
   onDeletePost,
   onSelectPost,
+  homePage,
 }: Props) => {
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -39,28 +57,28 @@ const PostItem = ({
   const singlePostPage = !onSelectPost;
 
   const [error, setError] = useState(false);
-  
-  const handleDelete = async (event: React.MouseEvent<HTMLDivElement, MouseEvent>,)=> {
+
+  const handleDelete = async (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     event.stopPropagation();
     setLoadingDelete(true);
     try {
       const success = await onDeletePost(post);
 
-      if(!success){
+      if (!success) {
         throw new Error("Failed to delete post");
       }
 
       console.log("Post successfully deleted");
-      if(singlePostPage){
-        router.push(`/r/${post.communityId}`)
+      if (singlePostPage) {
+        router.push(`/r/${post.communityId}`);
       }
-      
-    } catch (error:any) {
-      setError(error.message)
+    } catch (error: any) {
+      setError(error.message);
     }
     setLoadingDelete(false);
   };
-
 
   return (
     <Flex
@@ -68,9 +86,9 @@ const PostItem = ({
       bg="white"
       borderColor={singlePostPage ? "white" : "gray.300"}
       borderRadius={singlePostPage ? "4px 4px 0px 0px" : "4px"}
-      _hover={{ borderColor:singlePostPage ? "none" : "gray.500" }}
+      _hover={{ borderColor: singlePostPage ? "none" : "gray.500" }}
       cursor={singlePostPage ? "unset" : "pointer"}
-      onClick={()=>onSelectPost && onSelectPost(post)}
+      onClick={() => onSelectPost && onSelectPost(post)}
     >
       <Flex
         direction="column"
@@ -86,7 +104,7 @@ const PostItem = ({
           }
           color={userVoteValue === 1 ? "yellow" : "brand.400"}
           fontSize={22}
-          onClick={(event) => onVote(event,  post, 1, post.communityId)}
+          onClick={(event) => onVote(event, post, 1, post.communityId)}
           cursor="pointer"
         />
         <Text fontSize="9pt">{post.voteStatus}</Text>
@@ -98,20 +116,37 @@ const PostItem = ({
           }
           color={userVoteValue === 1 ? "#4379ff" : "gray.400"}
           fontSize={22}
-          onClick={(event)=> onVote(event,  post, -1, post.communityId)}
+          onClick={(event) => onVote(event, post, -1, post.communityId)}
           cursor="pointer"
         />
       </Flex>
       <Flex direction="column" width="100%">
-      {error && (
-        <Alert status="error">
-          <AlertIcon />
-          <Text>{error}</Text>
-        </Alert>
-      )}
+        {error && (
+          <Alert status="error">
+            <AlertIcon />
+            <Text mr={2}> {error} </Text>
+          </Alert>
+        )}
         <Stack spacing={1} p="10px">
           <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
             {/* Home page check */}
+            {homePage && (
+              <>
+                {post.communityImageURL ? (
+                  <Image src={post.communityImageURL} borderRadius="full" />
+                ) : (
+                  <Icon as={FaReddit} fontSize="18pt" mr={1} color="blue.500" />
+                )}
+                <Link href={`r/${post.communityId}`}> 
+                  <Text
+                    fontWeight={700}
+                    _hover={{ textDecoration: "underline" }}
+                    onClick={(event) => event.stopPropagation()}
+                  >{`r/${post.communityId}`}</Text>
+                </Link>
+                <Icon as={BsDot} color="gray.500" fontSize={8} />
+              </>
+            )}
             <Text>
               Posted by u/{post.creatorDisplayName} {""}
               {moment(new Date(post.createdAt?.seconds * 1000)).fromNow()}
@@ -123,10 +158,15 @@ const PostItem = ({
           <Text fontSize="10pt">{post.body}</Text>
           {post.imageURL && (
             <Flex justify="center" align="center" p={2}>
-              {loadingImage && (<Skeleton height="200px" width="100%" borderRadius={4} />)}
-              <Image src={post.imageURL} maxHeight="460px" alt="Post Image"
-              display={loadingImage ? "none" : "unset"}
-              onLoad={()=> setLoadingImage(false)}
+              {loadingImage && (
+                <Skeleton height="200px" width="100%" borderRadius={4} />
+              )}
+              <Image
+                src={post.imageURL}
+                maxHeight="460px"
+                alt="Post Image"
+                display={loadingImage ? "none" : "unset"}
+                onLoad={() => setLoadingImage(false)}
               />
             </Flex>
           )}
@@ -171,10 +211,12 @@ const PostItem = ({
               cursor="pointer"
               onClick={handleDelete}
             >
-              {loadingDelete ?(<Spinner size="sm"/>) : (
+              {loadingDelete ? (
+                <Spinner size="sm" />
+              ) : (
                 <>
-                <Icon as={AiOutlineDelete} mr={2} />
-              <Text fontSize="10pt">Delete</Text>
+                  <Icon as={AiOutlineDelete} mr={2} />
+                  <Text fontSize="10pt">Delete</Text>
                 </>
               )}
             </Flex>
