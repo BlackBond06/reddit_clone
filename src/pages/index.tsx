@@ -20,6 +20,7 @@ import { Box, Stack } from "@chakra-ui/react";
 import PostItem from "../components/Post/PostItem";
 import CreatePostLink from "../components/Community/CreatPostLink";
 import useCommunityData from "../hooks/useCommunityData";
+import Recommendations from "../components/Community/Recommendations";
 // import Post from "../components/Post/Post";
 
 const Home: NextPage = () => {
@@ -154,7 +155,9 @@ const Home: NextPage = () => {
           </Stack>
         )}
       </>
-      <></>
+      <>
+      <Recommendations/>
+      </>
     </PageContent>
   );
 };
