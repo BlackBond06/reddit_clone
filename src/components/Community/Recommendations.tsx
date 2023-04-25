@@ -95,6 +95,7 @@ const Recommendations = () => {
               return (
                 <Link key={item.id} href={`/r/${item.id}`}>
                   <Flex
+                    position="relative"
                     align="center"
                     fontSize="10pt"
                     borderBottom="1px solid"
@@ -132,8 +133,16 @@ const Recommendations = () => {
                         </span>
                       </Flex>
                     </Flex>
-                    <Box>
-                      <Button height="22px" fontSize="8pt" variant={isJoined ? "outline" : "solid"}>
+                    <Box position="absolute" right="10px">
+                      <Button
+                        height="22px"
+                        fontSize="8pt"
+                        variant={isJoined ? "outline" : "solid"}
+                        onClick={(event) => {
+                          event.preventDefault();
+                          onJoinOrLeaveCommunity(item, isJoined);
+                        }}
+                      >
                         {isJoined ? "Joined" : "Join"}
                       </Button>
                     </Box>
@@ -141,6 +150,12 @@ const Recommendations = () => {
                 </Link>
               );
             })}
+            <Box p="10px 20px">
+              <Button
+              height="30px"
+              width="100%"
+              >View All</Button>
+            </Box>
           </>
         )}
       </Flex>
