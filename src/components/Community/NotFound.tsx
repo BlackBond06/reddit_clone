@@ -1,6 +1,5 @@
 
-import React from "react";
-import { Flex, Button } from "@chakra-ui/react";
+import { Button, Flex, Image } from "@chakra-ui/react";
 import Link from "next/link";
 
 const NotFound = () => {
@@ -8,12 +7,17 @@ const NotFound = () => {
     <Flex
       direction="column"
       justifyContent="center"
-      alignItems="center"
+      align="center"
       minHeight="60vh"
     >
-      Sorry, that community does not exist or has been banned
+    
       <Link href="/">
-        <Button mt={4}>GO HOME</Button>
+        <Flex align="center" direction="column"
+      justifyContent="center">
+        <Image src="/images/telescope-snoo.png"/>
+      Sorry, that community does not exist or has been banned
+        <Button mt={10}>GO HOME</Button>
+        </Flex>
       </Link>
     </Flex>
   );
