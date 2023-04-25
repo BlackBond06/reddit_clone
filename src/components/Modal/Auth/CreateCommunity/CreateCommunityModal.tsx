@@ -1,11 +1,10 @@
-import { auth, firestore } from "../../../../firebase/clientApp";
+import useDirectory from "@/src/hooks/useDirectory";
 import {
   Box,
   Button,
   Checkbox,
   Divider,
-  Flex,
-  Input,
+  Flex, Icon, Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,16 +13,15 @@ import {
   ModalHeader,
   ModalOverlay,
   Stack,
-  Text,
-  Icon,
+  Text
 } from "@chakra-ui/react";
-import { doc, getDoc, runTransaction, serverTimestamp, setDoc,  } from "firebase/firestore";
-import React, { useState } from "react";
-import { BsFillEyeFill, BsFillPersonFill, BsPersonFill } from "react-icons/bs";
-import { HiLockClosed } from "react-icons/hi";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { doc, runTransaction, serverTimestamp } from "firebase/firestore";
 import { useRouter } from "next/router";
-import useDirectory from "@/src/hooks/useDirectory";
+import React, { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { BsFillEyeFill, BsPersonFill } from "react-icons/bs";
+import { HiLockClosed } from "react-icons/hi";
+import { auth, firestore } from "../../../../firebase/clientApp";
 
 type Props = {
   open: boolean;
