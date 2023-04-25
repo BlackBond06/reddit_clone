@@ -1,27 +1,19 @@
 import { Community, communityState } from "@/src/atoms/communitiesAtom";
-import {
-  Box,
-  Flex,
-  Text,
-  Icon,
-  Stack,
-  Divider,
-  Button,
-  Image,
-  Spinner,
-} from "@chakra-ui/react";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import React, { useRef, useState } from "react";
-import { RiCakeLine } from "react-icons/ri";
-import moment from "moment";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore, storage } from "@/src/firebase/clientApp";
 import useSelectFile from "@/src/hooks/useSelectFile";
-import { FaReddit } from "react-icons/fa";
-import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import {
+  Box, Button, Divider, Flex, Icon, Image,
+  Spinner, Stack, Text
+} from "@chakra-ui/react";
 import { doc, updateDoc } from "firebase/firestore";
+import { getDownloadURL, ref, uploadString } from "firebase/storage";
+import moment from "moment";
+import Link from "next/link";
+import { useRef, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { FaReddit } from "react-icons/fa";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { RiCakeLine } from "react-icons/ri";
 import { useSetRecoilState } from "recoil";
 
 type Props = {

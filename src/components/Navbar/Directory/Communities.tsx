@@ -1,15 +1,15 @@
 import { communityState } from "@/src/atoms/communitiesAtom";
 import { Box, Flex, Icon, MenuItem, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { FaReddit } from "react-icons/fa";
 import { GrAdd } from "react-icons/gr";
 import { useRecoilValue } from "recoil";
 import CreateCommunityModal from "../../Modal/Auth/CreateCommunity/CreateCommunityModal";
 import MenuListItem from "./MenuListItem";
 
-type Props = {};
 
-const Communities = (props: Props) => {
+
+const Communities = () => {
   const [open, setOpen] = useState(false);
   const mySnippets = useRecoilValue(communityState).mySnippets;
 

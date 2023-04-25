@@ -8,12 +8,12 @@ import {
   Skeleton,
   Spinner,
   Stack,
-  Text,
+  Text
 } from "@chakra-ui/react";
 // import { async } from "@firebase/util";
 import moment from "moment";
 import Link from "next/link";
-import { useRouter} from "next/router";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { BsChat, BsDot } from "react-icons/bs";
@@ -24,7 +24,7 @@ import {
   IoArrowRedoOutline,
   IoArrowUpCircleOutline,
   IoArrowUpCircleSharp,
-  IoBookmarkOutline,
+  IoBookmarkOutline
 } from "react-icons/io5";
 
 type Props = {
@@ -102,7 +102,7 @@ const PostItem = ({
           as={
             userVoteValue === 1 ? IoArrowUpCircleSharp : IoArrowUpCircleOutline
           }
-          color={userVoteValue === 1 ? "yellow" : "brand.400"}
+          color={userVoteValue === 1 ? "#FF4300" : "brand.400"}
           fontSize={22}
           onClick={(event) => onVote(event, post, 1, post.communityId)}
           cursor="pointer"

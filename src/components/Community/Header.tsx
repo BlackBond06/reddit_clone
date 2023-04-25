@@ -1,7 +1,6 @@
-import { Community } from "../../atoms/communitiesAtom";
-import React from "react";
 import { Box, Button, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { FaReddit } from "react-icons/fa";
+import { Community } from "../../atoms/communitiesAtom";
 import useCommunityData from "../../hooks/useCommunityData";
 
 type Props = {
