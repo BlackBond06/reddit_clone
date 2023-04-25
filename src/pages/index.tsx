@@ -1,8 +1,4 @@
-import type { NextPage } from "next";
-import PageContent from "../components/layouts/PageContent";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, firestore } from "../firebase/clientApp";
-import { useEffect, useState } from "react";
+import { Stack } from "@chakra-ui/react";
 import {
   collection,
   getDocs,
@@ -11,17 +7,25 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import usePost from "../hooks/usePost";
-import { useRecoilValue } from "recoil";
-import { communityState } from "../atoms/communitiesAtom";
+import type { NextPage } from "next";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { Post, PostVote } from "../atoms/postsAtom";
-import PostLoader from "../components/Post/PostLoader";
-import { Box, Stack } from "@chakra-ui/react";
-import PostItem from "../components/Post/PostItem";
 import CreatePostLink from "../components/Community/CreatPostLink";
-import useCommunityData from "../hooks/useCommunityData";
+import PersonalHome from "../components/Community/PersonalHome";
+import Premium from "../components/Community/Premium";
 import Recommendations from "../components/Community/Recommendations";
-// import Post from "../components/Post/Post";
+import PageContent from "../components/layouts/PageContent";
+import PostItem from "../components/Post/PostItem";
+import PostLoader from "../components/Post/PostLoader";
+import { auth, firestore } from "../firebase/clientApp";
+import useCommunityData from "../hooks/useCommunityData";
+import usePost from "../hooks/usePost";
+
+
+
+
+
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth);
@@ -98,12 +102,15 @@ const Home: NextPage = () => {
       );
 
       const postVoteDocs = await getDocs(postVotesQuery);
-      const postVotes = postVoteDocs.docs.map(doc => ({id:doc.id, ...doc.data()}));
+      const postVotes = postVoteDocs.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-      setPostStateValue(prev =>({
+      setPostStateValue((prev) => ({
         ...prev,
         postVotes: postVotes as PostVote[],
-      }))
+      }));
     } catch (error) {
       console.log("getUserPostVote Error", error);
     }
@@ -120,12 +127,12 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (user && postStateValue.posts.length) getUserPostVote();
 
-    return ()=>{
-      setPostStateValue(prev =>({
+    return () => {
+      setPostStateValue((prev) => ({
         ...prev,
-        postVotes:[],
-      }))
-    }
+        postVotes: [],
+      }));
+    };
   }, [user, postStateValue.posts]);
 
   return (
@@ -155,11 +162,15 @@ const Home: NextPage = () => {
           </Stack>
         )}
       </>
-      <>
-      <Recommendations/>
-      </>
+      <Stack spacing={5}>
+        <Recommendations />
+        <Premium />
+        <PersonalHome user={user} />
+      </Stack>
     </PageContent>
   );
 };
 
 export default Home;
+
+// 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
